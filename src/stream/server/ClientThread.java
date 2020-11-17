@@ -10,8 +10,7 @@ package stream.server;
 import java.io.*;
 import java.net.*;
 
-public class ClientThread
-extends Thread {
+public class ClientThread extends Thread {
 	
 	private Server server;
 	private Socket clientSocket;
@@ -29,10 +28,13 @@ extends Thread {
 	 **/
 	public void run() {
 		try {
-			socIn = null;
 			socIn = new BufferedReader(
 					new InputStreamReader(clientSocket.getInputStream()));    
 			socOut = new PrintStream(clientSocket.getOutputStream());
+			sendMessage("Vous etes bien connecté");
+			for(String msg : server.getListMessages()) {
+				sendMessage(msg);
+			}
 			while (true) {
 				String line = socIn.readLine();
 				server.sendMessageToOtherClient(this, line);
@@ -43,7 +45,7 @@ extends Thread {
 	}
 
 	public void sendMessage(String msg) {
-		socOut.println(msg);
+		this.socOut.println(msg);
 	}
 }
 
