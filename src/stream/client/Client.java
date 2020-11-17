@@ -9,7 +9,11 @@ package stream.client;
 import java.io.*;
 import java.net.*;
 
-
+/**
+ * Classe représentant un client
+ * @author Binome 1-8
+ *	
+ */
 public class Client {
 
 	String host;
@@ -23,7 +27,10 @@ public class Client {
 		this.port = port;
 		this.host = host;
 	}
-
+	
+	/**
+	 * Méthode appelée dans le MainClient, qui permet de gérer les thread d'envoi et de réception de messages du client
+	 **/
 	public void run() {
 		//InterfaceController interfaceController = new InterfaceController();
 
@@ -89,8 +96,11 @@ public class Client {
       //echoSocket.close();
     }
 	
+	/**
+	 * Méthode appelée dans la méthode run de la classe Client, qui permet de choisir un nom d'utilisateur
+	 **/
 	public void choisirUsername() {
-		System.out.println("choisissez un username: ");
+		System.out.println("choisissez un nom d'utilisateur: ");
 		try {
 			this.stdIn.readLine();
 		} catch (IOException e) {
@@ -98,6 +108,8 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+	
+	
         
 }
 

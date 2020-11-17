@@ -7,7 +7,11 @@ package stream.client;
  * Authors:
  */
 
-
+/**
+ * Classe représentant le Main du côté du client
+ * @author Binome 1-8
+ *	
+ */
 public class MainClient  {
 	
 	/**
