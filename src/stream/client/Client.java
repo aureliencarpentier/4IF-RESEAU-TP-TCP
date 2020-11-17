@@ -91,7 +91,7 @@ public class Client {
         }
                              
 
-      echoSocket.close();
+      //echoSocket.close();
     }
 }
 
