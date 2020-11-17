@@ -8,7 +8,6 @@ package stream.client;
 
 import java.io.*;
 import java.net.*;
-import stream.client.InterfaceController;
 
 
 public class Client {
@@ -24,7 +23,7 @@ public class Client {
     	final BufferedReader stdIn ;
         final BufferedReader socIn ;
     	
-        InterfaceController interfaceController = new InterfaceController();
+        //InterfaceController interfaceController = new InterfaceController();
         Socket echoSocket = null;
         final PrintStream socOut ;
 

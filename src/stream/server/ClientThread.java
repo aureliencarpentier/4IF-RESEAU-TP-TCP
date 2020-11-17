@@ -12,11 +12,15 @@ import java.net.*;
 
 public class ClientThread
 extends Thread {
-
+	
+	private Server server;
 	private Socket clientSocket;
+	private BufferedReader socIn;
+	private PrintStream socOut;
 
-	ClientThread(Socket s) {
+	ClientThread(Socket s, Server server) {
 		this.clientSocket = s;
+		this.server = server;
 	}
 
 	/**
@@ -25,19 +29,22 @@ extends Thread {
 	 **/
 	public void run() {
 		try {
-			BufferedReader socIn = null;
+			socIn = null;
 			socIn = new BufferedReader(
 					new InputStreamReader(clientSocket.getInputStream()));    
-			PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
+			socOut = new PrintStream(clientSocket.getOutputStream());
 			while (true) {
 				String line = socIn.readLine();
-				socOut.println(line);
+				server.sendMessageToOtherClient(this, line);
 			}
 		} catch (Exception e) {
-			System.err.println("Error in EchoServer:" + e); 
+			System.err.println("Error in Server:" + e); 
 		}
 	}
 
+	public void sendMessage(String msg) {
+		socOut.println(msg);
+	}
 }
 
 
