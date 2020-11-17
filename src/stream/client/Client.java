@@ -85,7 +85,8 @@ public class Client {
 	public void choisirUsername() {
 		System.out.println("choisissez un nom d'utilisateur: ");
 		try {
-			this.stdIn.readLine();
+			String username = this.stdIn.readLine();
+			this.socOut.println(username);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

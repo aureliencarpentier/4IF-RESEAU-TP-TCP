@@ -1,24 +1,7 @@
 package stream.client;
 
-/***
- * EchoServer
- * Example of a TCP server
- * Date: 10/01/04
- * Authors:
- */
-
-/**
- * Classe représentant le Main du côté du client
- * @author Binome 1-8
- *	
- */
-public class MainClient  {
+public class MainClient {
 	
-	/**
-	 * main method
-	 * @param String port
-	 * 
-	 **/
 	public static void main(String args[]){ 
 		Client client;
 

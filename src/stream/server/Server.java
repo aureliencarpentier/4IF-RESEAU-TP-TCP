@@ -16,12 +16,10 @@ public class Server {
 	private ArrayList<ClientThread> listClients = new ArrayList<ClientThread>();
 	private Map<ClientThread, String> mapUsernames = new HashMap<>();
 	private List<String> listMessages = new ArrayList<>();
-	private int indexUsername;
 	private int port;
 	
 	public Server(int port) {
 		this.port = port;
-		this.indexUsername = 0;
 	}
 	
 	public void run() {
@@ -36,9 +34,6 @@ public class Server {
 				ClientThread ct = new ClientThread(clientSocket, this);
 				ct.start();
 				listClients.add(ct);
-				mapUsernames.put(ct, "Client " + indexUsername);
-				indexUsername++;
-				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();	
@@ -77,5 +72,9 @@ public class Server {
 	
 	public List<String> getListMessages() {
 		return listMessages;
+	}
+	
+	public void setUsername(ClientThread client, String username) {
+		mapUsernames.put(client, username);
 	}
 }
