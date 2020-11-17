@@ -9,50 +9,49 @@ package stream.client;
 import java.io.*;
 import java.net.*;
 
-
+/**
+ * Classe représentant un client
+ * @author Binome 1-8
+ *	
+ */
 public class Client {
 
+	String host;
+	int port;
+	private BufferedReader stdIn = null;
+	private BufferedReader socIn = null;
+	private PrintStream socOut = null;
+	Socket echoSocket = null;
 
+	public Client(String host, int port) {
+		this.port = port;
+		this.host = host;
+	}
 
 	/**
-	 *  main method
-	 *  accepts a connection, receives a message from client then sends an echo to the client
+	 * Méthode appelée dans le MainClient, qui permet de gérer les thread d'envoi et de réception de messages du client
 	 **/
-	public static void main(String[] args) throws IOException {
-
-		final BufferedReader stdIn ;
-		final BufferedReader socIn ;
-
+	public void run() {
 		//InterfaceController interfaceController = new InterfaceController();
-		Socket echoSocket = null;
-		final PrintStream socOut ;
-
-		if (args.length != 2) {
-			System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port>");
-			System.exit(1);
-		}
 
 		try {
 			// creation socket ==> connexion
-			echoSocket = new Socket(args[0],new Integer(args[1]).intValue());
-			socIn = new BufferedReader(
+			this.echoSocket = new Socket(this.host, this.port);
+			this.socIn = new BufferedReader(
 					new InputStreamReader(echoSocket.getInputStream()));    
-			socOut= new PrintStream(echoSocket.getOutputStream());
-			stdIn = new BufferedReader(new InputStreamReader(System.in));
+			this.socOut= new PrintStream(echoSocket.getOutputStream());
+			this.stdIn = new BufferedReader(new InputStreamReader(System.in));
 
+			choisirUsername();
 
 			Thread envoyer = new Thread (new Runnable(){
-
 				String line;
-
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
 					while (true) {
 						try {
 							line=stdIn.readLine();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						if (line.equals(".")) break;
@@ -62,36 +61,35 @@ public class Client {
 			});
 
 			Thread recevoir = new Thread (new Runnable(){
-
 				@Override
 				public void run() {
-					String msg;
-					// TODO Auto-generated method stub
-					try {
-						while ((msg = socIn.readLine()) != null) {
-							System.out.println("echo : " + msg);
+					while (true) {
+						try {
+							System.out.println("echo: " + socIn.readLine());
+						} catch (IOException e) {
+							e.printStackTrace();
 						}
-					} catch (IOException e) {
-						e.printStackTrace();
-
 					}
 				}
 			});
-
 			recevoir.start();
 			envoyer.start();
-
-		} catch (UnknownHostException e) {
-			System.err.println("Don't know about host:" + args[0]);
-			System.exit(1);
-		} catch (IOException e) {
-			System.err.println("Couldn't get I/O for "
-					+ "the connection to:"+ args[0]);
-			System.exit(1);
+		} catch(IOException e) {
+			e.printStackTrace();
 		}
-
-
-		//echoSocket.close();
+	}
+	
+	/**
+	 * Méthode appelée dans la méthode run de la classe Client, qui permet de choisir un nom d'utilisateur
+	 **/
+	public void choisirUsername() {
+		System.out.println("choisissez un nom d'utilisateur: ");
+		try {
+			this.stdIn.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
 
