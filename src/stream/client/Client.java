@@ -12,34 +12,30 @@ import java.net.*;
 
 public class Client {
 
+	String host;
+	int port;
+	private BufferedReader stdIn = null;
+    private BufferedReader socIn = null;
+    private PrintStream socOut = null;
+    Socket echoSocket = null;
 
+	public Client(String host, int port) {
+		this.port = port;
+		this.host = host;
+	}
 
-  /**
-  *  main method
-  *  accepts a connection, receives a message from client then sends an echo to the client
-  **/
-    public static void main(String[] args) throws IOException {
-        
-    	final BufferedReader stdIn ;
-        final BufferedReader socIn ;
-    	
-        //InterfaceController interfaceController = new InterfaceController();
-        Socket echoSocket = null;
-        final PrintStream socOut ;
-
-        if (args.length != 2) {
-          System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port>");
-          System.exit(1);
-        }
+	public void run() {
+		//InterfaceController interfaceController = new InterfaceController();
 
         try {
       	    // creation socket ==> connexion
-      	    echoSocket = new Socket(args[0],new Integer(args[1]).intValue());
-	    socIn = new BufferedReader(
+      	this.echoSocket = new Socket(this.host, this.port);
+	    this.socIn = new BufferedReader(
 	    		          new InputStreamReader(echoSocket.getInputStream()));    
-	    socOut= new PrintStream(echoSocket.getOutputStream());
-	    stdIn = new BufferedReader(new InputStreamReader(System.in));
+	    this.socOut= new PrintStream(echoSocket.getOutputStream());
+	    this.stdIn = new BufferedReader(new InputStreamReader(System.in));
 	    
+	    choisirUsername();
 	    
         Thread envoyer = new Thread (new Runnable(){
         	
@@ -81,17 +77,28 @@ public class Client {
         envoyer.start();
         
         } catch (UnknownHostException e) {
-            System.err.println("Don't know about host:" + args[0]);
+            System.err.println("Don't know about host:" + this.host);
             System.exit(1);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for "
-                               + "the connection to:"+ args[0]);
+                               + "the connection to:"+ this.host);
             System.exit(1);
         }
                              
 
       //echoSocket.close();
     }
+	
+	public void choisirUsername() {
+		System.out.println("choisissez un username: ");
+		try {
+			this.stdIn.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+        
 }
 
 
