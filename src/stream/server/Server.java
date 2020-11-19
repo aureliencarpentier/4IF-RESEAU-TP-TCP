@@ -1,5 +1,8 @@
 package stream.server;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Server {
 	
@@ -17,6 +21,7 @@ public class Server {
 	private Map<ClientThread, String> mapUsernames = new HashMap<>();
 	private List<String> listMessages = new ArrayList<>();
 	private int port;
+	private File history;
 	
 	public Server(int port) {
 		this.port = port;
@@ -26,6 +31,9 @@ public class Server {
 		try {
 			listenSocket = new ServerSocket(this.port);
 			System.out.println("Server ready...");
+			
+			setUpHistory();
+			
 			while(true) {
 				Socket clientSocket = listenSocket.accept();
 				System.out.println("Connexion from:" + clientSocket.getInetAddress());
@@ -57,6 +65,7 @@ public class Server {
 		
 		String toSend = formattedDate + " > " + mapUsernames.get(sender) + " : " + msg;
 		this.listMessages.add(toSend);
+		writeToHistory(toSend);
 		for(ClientThread client : listClients) {
 			if(client != sender) {
 				client.sendMessage(toSend);
@@ -70,6 +79,38 @@ public class Server {
 		}
 	}
 	
+	public void setUpHistory() {
+		history = new File("history.txt");
+		try {
+			if(history.createNewFile()) {
+				System.out.println("history file created");
+			} else {
+				System.out.println("File already exists");
+				Scanner scanner = new Scanner(history);
+				while(scanner.hasNextLine()) {
+					String line = scanner.nextLine();
+					listMessages.add(line);
+				}
+				scanner.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
+	}
+	
+	public void writeToHistory(String str) {
+		FileWriter writer;
+		try {
+			writer = new FileWriter("history.txt", true);
+			writer.write(str);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
+	}
+	
 	public List<String> getListMessages() {
 		return listMessages;
 	}
@@ -77,4 +118,6 @@ public class Server {
 	public void setUsername(ClientThread client, String username) {
 		mapUsernames.put(client, username);
 	}
+	
+	
 }

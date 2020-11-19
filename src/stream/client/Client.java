@@ -16,13 +16,15 @@ import java.net.*;
  */
 public class Client {
 
-	String host;
-	int port;
+	private String host;
+	private int port;
 	private BufferedReader stdIn = null;
 	private BufferedReader socIn = null;
 	private PrintStream socOut = null;
-	Socket echoSocket = null;
-
+	private Socket echoSocket = null;
+	private String username;
+	private boolean isConnected = false;
+	
 	public Client(String host, int port) {
 		this.port = port;
 		this.host = host;
@@ -41,21 +43,30 @@ public class Client {
 					new InputStreamReader(echoSocket.getInputStream()));    
 			this.socOut= new PrintStream(echoSocket.getOutputStream());
 			this.stdIn = new BufferedReader(new InputStreamReader(System.in));
-
+			isConnected = true;
 			choisirUsername();
 
 			Thread envoyer = new Thread (new Runnable(){
 				String line;
 				@Override
 				public void run() {
-					while (true) {
+					while (isConnected) {
 						try {
 							line=stdIn.readLine();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						if (line.equals(".")) break;
+						if (line.equals(".")) { 
+							isConnected = false; 
+							break;
+						}
 						socOut.println(line);
+					}
+					try {
+						echoSocket.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+
 					}
 				}
 			});
@@ -63,7 +74,7 @@ public class Client {
 			Thread recevoir = new Thread (new Runnable(){
 				@Override
 				public void run() {
-					while (true) {
+					while (isConnected) {
 						try {
 							System.out.println("echo: " + socIn.readLine());
 						} catch (IOException e) {
@@ -79,18 +90,19 @@ public class Client {
 		}
 	}
 	
+	public void sendMessage(String msg) {
+		socOut.println(msg);
+	}
+
 	/**
 	 * Méthode appelée dans la méthode run de la classe Client, qui permet de choisir un nom d'utilisateur
 	 **/
 	public void choisirUsername() {
-		System.out.println("choisissez un nom d'utilisateur: ");
-		try {
-			String username = this.stdIn.readLine();
-			this.socOut.println(username);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.socOut.println(this.username);
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
 

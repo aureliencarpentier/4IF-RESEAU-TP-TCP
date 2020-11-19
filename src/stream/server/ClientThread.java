@@ -33,14 +33,14 @@ public class ClientThread extends Thread {
 			socOut = new PrintStream(clientSocket.getOutputStream());
 			
 			String username = socIn.readLine();
+			System.out.println(username);
 			server.setUsername(this, username);
 			sendMessage("Vous etes bien connecté");
 			for(String msg : server.getListMessages()) {
 				sendMessage(msg);
 			}
-			
-			while (true) {
-				String line = socIn.readLine();
+			String line;
+			while ((line = socIn.readLine()) != null) {
 				server.sendMessageToOtherClient(this, line);
 			}
 		} catch (Exception e) {
