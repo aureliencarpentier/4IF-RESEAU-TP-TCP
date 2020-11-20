@@ -2,6 +2,7 @@ package stream.client;
 
 import java.io.IOException;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 
 public class InterfaceController {
 
@@ -34,12 +36,20 @@ public class InterfaceController {
 	@FXML
 	public void onSubmitUsername() throws IOException {
 		System.out.println("submit username");
-		client.setUsername(usernameInput.getText());
-		client.run();
 		loader = new FXMLLoader(getClass().getResource("SceneChat.fxml"));
 		loader.setController(this);
 		Parent root = loader.load();
 		primaryStage.setScene(new Scene(root));
+		
+		primaryStage.setOnCloseRequest((event) -> {
+			System.out.println("stop");
+			client.stop();
+			System.exit(0);
+		}) ;
+		
+		System.out.println(messagesView);
+		client.setUsername(usernameInput.getText());
+		client.run();
 	}
 	
 	@FXML
@@ -47,5 +57,26 @@ public class InterfaceController {
 		System.out.println("submit message");
 		String msg = messageInput.getText();
 		client.sendMessage(msg);
+		messageInput.clear();
+	}
+	
+	public void addMessage(String msg)  {
+		System.out.println(msg);
+		Task<Void> task = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				Platform.runLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						messagesView.getItems().add(msg);
+						
+					}
+				});
+				return null;
+			}
+		};
+		new Thread(task).start();
+		
 	}
 }

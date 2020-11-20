@@ -67,9 +67,9 @@ public class Server {
 		this.listMessages.add(toSend);
 		writeToHistory(toSend);
 		for(ClientThread client : listClients) {
-			if(client != sender) {
+			
 				client.sendMessage(toSend);
-			}
+			
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class Server {
 		FileWriter writer;
 		try {
 			writer = new FileWriter("history.txt", true);
-			writer.write(str);
+			writer.write(str + "\n");
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();

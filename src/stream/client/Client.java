@@ -8,6 +8,8 @@ package stream.client;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe représentant un client
@@ -24,6 +26,9 @@ public class Client {
 	private Socket echoSocket = null;
 	private String username;
 	private boolean isConnected = false;
+	
+	private MessageHandler handler;
+	private List<String> users = new ArrayList<>();
 	
 	public Client(String host, int port) {
 		this.port = port;
@@ -76,7 +81,9 @@ public class Client {
 				public void run() {
 					while (isConnected) {
 						try {
-							System.out.println("echo: " + socIn.readLine());
+							String msg = socIn.readLine();
+							handler.handleMessage(msg);
+							System.out.println("echo: " + msg);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -90,8 +97,24 @@ public class Client {
 		}
 	}
 	
+	public void stop() {
+		isConnected = false;
+	}
+	
 	public void sendMessage(String msg) {
 		socOut.println(msg);
+	}
+	
+	public void addUser(String username) {
+		users.add(username);
+	}
+	
+	public void removeUser(String username) {
+		users.remove(username);
+	}
+	
+	public void setHandler(MessageHandler handler) {
+		this.handler = handler;
 	}
 
 	/**

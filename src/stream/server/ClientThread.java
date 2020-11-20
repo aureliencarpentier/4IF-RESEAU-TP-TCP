@@ -37,6 +37,7 @@ public class ClientThread extends Thread {
 			server.setUsername(this, username);
 			sendMessage("Vous etes bien connecté");
 			for(String msg : server.getListMessages()) {
+				System.out.println(msg);
 				sendMessage(msg);
 			}
 			String line;
