@@ -7,13 +7,17 @@
 
 package stream.server;
 
+/**
+ * Classe permettant de lancer le serveur
+ * @author Binome 1-8
+ *
+ */
 public class MainServerMultiThreaded  {
 
 	/**
-	 * main method
-	 * @param String port
-	 * 
-	 **/
+	 * La méthode main
+	 * @param args
+	 */
 	public static void main(String args[]){ 
 		Server server;
 

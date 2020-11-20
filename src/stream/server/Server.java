@@ -1,7 +1,6 @@
 package stream.server;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,6 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Classe serveur
+ * @author binome 1-8
+ *
+ */
 public class Server {
 	
 	private ServerSocket listenSocket;
@@ -23,10 +27,17 @@ public class Server {
 	private int port;
 	private File history;
 	
+	/**
+	 * Coinstructeur
+	 * @param port Port sur lequel le serveur écoute
+	 */
 	public Server(int port) {
 		this.port = port;
 	}
 	
+	/**
+	 * Permet de mettre en route le serveur
+	 */
 	public void run() {
 		try {
 			listenSocket = new ServerSocket(this.port);
@@ -49,7 +60,7 @@ public class Server {
 	}
 	
 	/**
-	 * Sends a message to all clients connected to the server
+	 * Envoi un message à tous les utilisateurs
 	 * @param msg
 	 */
 	public void broadcast(String msg) {
@@ -58,6 +69,11 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Renvoi aux utilisateurs le message qu'un utilisateur a envoyé
+	 * @param sender L'emetteur du message
+	 * @param msg Le message
+	 */
 	public void sendMessageToOtherClient(ClientThread sender, String msg) {
 		LocalDateTime time = LocalDateTime.now();
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -73,12 +89,19 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Envoi l'historique des messages à un client
+	 * @param client Client qui va recevoir l'historique
+	 */
 	public void sendHistoryMessage(ClientThread client) {
 		for(String msg : this.listMessages) {
 			client.sendMessage(msg);
 		}
 	}
 	
+	/**
+	 * Met en place l'historique
+	 */
 	public void setUpHistory() {
 		history = new File("history.txt");
 		try {
@@ -99,6 +122,10 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Ecrit un message dans l'historique
+	 * @param str Message à écrire
+	 */
 	public void writeToHistory(String str) {
 		FileWriter writer;
 		try {
