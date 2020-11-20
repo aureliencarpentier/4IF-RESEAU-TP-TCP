@@ -9,7 +9,8 @@ import javafx.stage.Stage;
 public class MainClient extends Application {
 	
 	static Client client;
-	InterfaceController controller;
+	private InterfaceController controller;
+	private MessageHandler handler;
 	
 	public static void main(String args[]){ 
 		client = new Client(args[0],Integer.parseInt(args[1]));
@@ -21,6 +22,8 @@ public class MainClient extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
 		controller = new InterfaceController(primaryStage, loader, client);
+		handler = new MessageHandler(controller);
+		client.setHandler(handler);
 		
 		loader.setController(controller);
 		Parent root = loader.load();

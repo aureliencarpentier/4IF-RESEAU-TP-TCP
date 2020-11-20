@@ -1,1 +1,14 @@
-14:34:50 > test : salut14:34:51 > test : cavva 14:34:52 > test : fefezfezr08:33:39 > bonjourtoi : jkl08:34:16 > bonjourtoi : jkl
+14:34:50 > test : salut
+14:34:51 > test : cavva 
+14:34:52 > test : fefezfezr
+08:33:39 > bonjourtoi : jkl
+08:34:16 > bonjourtoi : jkl
+09:02:01 > jean : bonjour ?
+09:02:06 > jean : ça va ?
+09:02:14 > jean : oui tranquille
+09:02:53 > uc : hey ho ?
+09:23:17 > test : salut
+09:24:08 > salut : hey
+09:24:17 > test : ca va
+09:24:22 > test : oui tranquille
+09:24:33 > salut : ok parfait

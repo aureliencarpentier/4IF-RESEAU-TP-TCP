@@ -1,15 +1,13 @@
-/***
- * ClientThread
- * Example of a TCP server
- * Date: 14/12/08
- * Authors:
- */
-
 package stream.server;
 
 import java.io.*;
 import java.net.*;
 
+/**
+ * Classe qui étend Thread et qui permet associe un utilisateur
+ * @author binome 1-8
+ *
+ */
 public class ClientThread extends Thread {
 	
 	private Server server;
@@ -23,9 +21,8 @@ public class ClientThread extends Thread {
 	}
 
 	/**
-	 * receives a request from client then sends an echo to the client
-	 * @param clientSocket the client socket
-	 **/
+	 * Permet de mettre en route le thread
+	 */
 	public void run() {
 		try {
 			socIn = new BufferedReader(
@@ -37,6 +34,7 @@ public class ClientThread extends Thread {
 			server.setUsername(this, username);
 			sendMessage("Vous etes bien connecté");
 			for(String msg : server.getListMessages()) {
+				System.out.println(msg);
 				sendMessage(msg);
 			}
 			String line;
@@ -48,6 +46,10 @@ public class ClientThread extends Thread {
 		}
 	}
 
+	/***
+	 * Permet d'envoyer un message à l'utilisateur
+	 * @param msg Le message a envoyé
+	 */
 	public void sendMessage(String msg) {
 		this.socOut.println(msg);
 	}
