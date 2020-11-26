@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 
 /**
  * Controleur pour l'interface
@@ -96,20 +97,8 @@ public class InterfaceController {
 	 */
 	public void addMessage(String msg)  {
 		System.out.println(msg);
-		Task<Void> task = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				Platform.runLater(new Runnable() {
-					
-					@Override
-					public void run() {
-						messagesView.getItems().add(msg);
-						
-					}
-				});
-				return null;
-			}
-		};
-		new Thread(task).start();
+		ObservableList<String> newList = messagesView.getItems();
+		newList.add(msg);
+		messagesView.setItems(newList);
 	}
 }
