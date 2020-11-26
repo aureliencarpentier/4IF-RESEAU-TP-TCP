@@ -10,9 +10,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 
+/**
+ * Controleur pour l'interface
+ * @author binome 1-8
+ *
+ */
 public class InterfaceController {
 
 	private Stage primaryStage;
@@ -20,6 +26,9 @@ public class InterfaceController {
 	private FXMLLoader loader;
 
 	@FXML private TextField usernameInput;
+	@FXML private Text textUsername;
+	@FXML private Text usernameError;
+	@FXML private Text textErrorConnection;
 
 	@FXML private ListView<String> messagesView;
 	@FXML private ListView<String> usersView;
@@ -33,25 +42,46 @@ public class InterfaceController {
 		this.loader = loader;
 	}
 
+	/**
+	 * Lancer lorsque l'utilisateur rentre son username
+	 * @throws IOException
+	 */
 	@FXML
 	public void onSubmitUsername() throws IOException {
 		System.out.println("submit username");
-		loader = new FXMLLoader(getClass().getResource("SceneChat.fxml"));
-		loader.setController(this);
-		Parent root = loader.load();
-		primaryStage.setScene(new Scene(root));
 		
-		primaryStage.setOnCloseRequest((event) -> {
-			System.out.println("stop");
-			client.stop();
-			System.exit(0);
-		}) ;
+		String username = usernameInput.getText();
+		if(username.matches("[a-zA-Z0-9]{3,}")) {
+			loader = new FXMLLoader(getClass().getResource("SceneChat.fxml"));
+			loader.setController(this);
+			Parent root = loader.load();
+			primaryStage.setScene(new Scene(root));
+			
+			primaryStage.setOnCloseRequest((event) -> {
+				System.out.println("stop");
+				client.stop();
+				System.exit(0);
+			}) ;
+			client.setUsername(usernameInput.getText());
+			try {
+				client.run();
+				textUsername.setText(usernameInput.getText());
+			} catch (Exception e) {
+				textErrorConnection.setOpacity(1.0);
+				messageBtn.setDisable(true);
+				messageInput.setDisable(true);
+				e.printStackTrace();
+			}
+			
+		} else {
+			usernameError.setOpacity(1.0);
+		}
 		
-		System.out.println(messagesView);
-		client.setUsername(usernameInput.getText());
-		client.run();
 	}
 	
+	/**
+	 * Lancer quand l'utilisateur envoie un message
+	 */
 	@FXML
 	public void onSubmitMessage() {
 		System.out.println("submit message");
@@ -60,6 +90,10 @@ public class InterfaceController {
 		messageInput.clear();
 	}
 	
+	/**
+	 * Permet d'ajouter un message dans l'interface
+	 * @param msg Le message à ajouter
+	 */
 	public void addMessage(String msg)  {
 		System.out.println(msg);
 		Task<Void> task = new Task<Void>() {
@@ -77,6 +111,5 @@ public class InterfaceController {
 			}
 		};
 		new Thread(task).start();
-		
 	}
 }

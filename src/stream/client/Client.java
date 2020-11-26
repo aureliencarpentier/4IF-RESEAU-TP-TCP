@@ -8,9 +8,6 @@ package stream.client;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Classe représentant un client
  * @author Binome 1-8
@@ -28,7 +25,6 @@ public class Client {
 	private boolean isConnected = false;
 	
 	private MessageHandler handler;
-	private List<String> users = new ArrayList<>();
 	
 	public Client(String host, int port) {
 		this.port = port;
@@ -38,10 +34,10 @@ public class Client {
 	/**
 	 * Méthode appelée dans le MainClient, qui permet de gérer les thread d'envoi et de réception de messages du client
 	 **/
-	public void run() {
+	public void run() throws Exception {
 		//InterfaceController interfaceController = new InterfaceController();
 
-		try {
+		
 			// creation socket ==> connexion
 			this.echoSocket = new Socket(this.host, this.port);
 			this.socIn = new BufferedReader(
@@ -92,25 +88,21 @@ public class Client {
 			});
 			recevoir.start();
 			envoyer.start();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
+	/**
+	 * Met la variable isConnected à faux pour arreter de recevoir et d'envoyer
+	 */
 	public void stop() {
 		isConnected = false;
 	}
 	
+	/**
+	 * Permet d'envoyer un message
+	 * @param msg Le message à envoyer
+	 */
 	public void sendMessage(String msg) {
 		socOut.println(msg);
-	}
-	
-	public void addUser(String username) {
-		users.add(username);
-	}
-	
-	public void removeUser(String username) {
-		users.remove(username);
 	}
 	
 	public void setHandler(MessageHandler handler) {
@@ -126,6 +118,10 @@ public class Client {
 	
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 }
 
