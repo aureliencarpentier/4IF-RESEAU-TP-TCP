@@ -1,9 +1,4 @@
-09:02:01 > jean : bonjour ?
-09:02:06 > jean : ça va ?
-09:02:14 > jean : oui tranquille
-09:02:53 > uc : hey ho ?
-09:23:17 > test : salut
-09:24:08 > salut : hey
-09:24:17 > test : ca va
-09:24:22 > test : oui tranquille
-09:24:33 > salut : ok parfait
+16:02:37 > jean : salut
+16:02:42 > jean : ca va ?
+16:15:12 > ddd : ,,
+16:15:20 > ddd : ,,,,,,,,,,,,

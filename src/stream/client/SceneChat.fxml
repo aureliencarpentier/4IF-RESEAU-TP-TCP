@@ -6,13 +6,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ListView fx:id="messagesView" layoutX="14.0" layoutY="14.0" prefHeight="332.0" prefWidth="387.0" />
+      <ListView fx:id="messagesView" layoutX="14.0" layoutY="50.0" prefHeight="296.0" prefWidth="387.0" />
       <Button fx:id="messageBtn" layoutX="415.0" layoutY="357.0" mnemonicParsing="false" onMousePressed="#onSubmitMessage" prefHeight="25.0" prefWidth="69.0" text="Envoyer" />
       <ListView fx:id="usersView" layoutX="415.0" layoutY="50.0" prefHeight="296.0" prefWidth="179.0" />
       <Text layoutX="447.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Utilisateurs connectés" />
       <TextField fx:id="messageInput" layoutX="13.0" layoutY="357.0" prefHeight="25.0" prefWidth="387.0" promptText="Votre message ..." />
+      <Text layoutX="14.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connecté en tant que : " />
+      <Text fx:id="textUsername" layoutX="140.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="username" />
+      <Text fx:id="textErrorConnection" fill="RED" layoutX="208.0" layoutY="36.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Erreur lors de la connexion" />
    </children>
 </AnchorPane>
