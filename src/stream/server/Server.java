@@ -28,7 +28,7 @@ public class Server {
 	private File history;
 	
 	/**
-	 * Coinstructeur
+	 * Constructeur
 	 * @param port Port sur lequel le serveur écoute
 	 */
 	public Server(int port) {

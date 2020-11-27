@@ -11,7 +11,7 @@ public class MessageHandler {
 	
 	/**
 	 * Contructeur
-	 * @param controller
+	 * @param controller Controller
 	 */
 	public MessageHandler(InterfaceController controller) {
 		this.controller = controller;

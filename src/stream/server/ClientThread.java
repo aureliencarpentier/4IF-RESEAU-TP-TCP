@@ -15,6 +15,11 @@ public class ClientThread extends Thread {
 	private BufferedReader socIn;
 	private PrintStream socOut;
 
+	/**
+	 * Constructeur
+	 * @param s Socket
+	 * @param server Server
+	 */
 	ClientThread(Socket s, Server server) {
 		this.clientSocket = s;
 		this.server = server;
